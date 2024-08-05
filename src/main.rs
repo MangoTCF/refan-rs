@@ -49,9 +49,9 @@ fn main() {
                 .context(format!("Reading temperature for fan {}", fan.name))
                 .unwrap();
             let t = core::str::from_utf8(&buf[0..len]).unwrap()
-                .parse::<f32>()
+                .parse::<i32>()
                 .context(format!("Parsing temperature for fan {} from {} of len {}", fan.name, core::str::from_utf8(&buf).unwrap(), len))
-                .unwrap()
+                .unwrap() as f32
                 / 1000f32;
 
             let mut tpoint_l: TPoint = TPoint::default();
