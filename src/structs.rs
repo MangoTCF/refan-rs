@@ -1,5 +1,6 @@
 use std::fs::{File, OpenOptions};
 
+use anyhow::Context;
 use clap::Parser;
 use glob::glob;
 use log::Level;
@@ -14,14 +15,14 @@ where
     if path.contains("*") {
         let path = glob(&path)
             .expect("Invalid pattern given")
-            .next()
-            .unwrap()
+            .next().context(format!("Finding {}", path))
+            .unwrap().context(format!("Finding {}", path))
             .unwrap();
         return Ok(OpenOptions::new()
             .write(false)
             .read(true)
             .create(false)
-            .open(path)
+            .open(path.clone()).context(format!("Opening {}", path.display()))
             .unwrap());
     }
 
@@ -29,7 +30,7 @@ where
         .write(false)
         .read(true)
         .create(false)
-        .open(path)
+        .open(path.clone()).context(format!("Opening {}", path))
         .unwrap());
 }
 fn deserialize_path_to_file_rw<'de, D>(deserializer: D) -> Result<File, D::Error>
@@ -41,14 +42,14 @@ where
     if path.contains("*") {
         let path = glob(&path)
             .expect("Invalid pattern given")
-            .next()
-            .unwrap()
+            .next().context(format!("Finding {}", path))
+            .unwrap().context(format!("Finding {}", path))
             .unwrap();
         return Ok(OpenOptions::new()
             .write(true)
             .read(true)
             .create(false)
-            .open(path)
+            .open(path.clone()).context(format!("Opening {}", path.display()))
             .unwrap());
     }
 
@@ -56,7 +57,7 @@ where
         .write(true)
         .read(true)
         .create(false)
-        .open(path)
+        .open(path.clone()).context(format!("Opening {}", path))
         .unwrap());
 }
 
