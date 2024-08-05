@@ -1,0 +1,14 @@
+[package]
+name = "refan-rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+toml = "0.8.*" 
+serde = { version = "1.0.*", features = ["derive"] }
+serde_json = "1.0.*"
+clap = { version = "*", features = ["derive"] }
+anyhow = "*"
+log = { version = "*", features = ["serde"] }
+simplelog = { version = "*", features = ["paris"] }
+num-traits = "0.2.*"
