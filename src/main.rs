@@ -104,7 +104,7 @@ fn main() {
             if (!fan.stopped) && (pwm as i16) < fan.pwm_stop {
                 fan.stopped = true;
             }
-            debug!(target: fan.name.as_str(), "Stopped: {}, pwm: {}, temp: {}, lerp between {:?} and {:?}", fan.stopped, pwm, t, tpoint_l, tpoint_h);
+            debug!(target: fan.name.as_str(), "Stopped: {}, pwm: {:.2}, temp: {:.2}, lerp between {:?} and {:?}", fan.stopped, pwm, t, tpoint_l, tpoint_h);
             if !fan.stopped {
                 fan.pwm_write
                     .write((pwm as i16).to_string().as_bytes())
