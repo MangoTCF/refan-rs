@@ -24,10 +24,16 @@ fn main() {
         simplelog::Config::default(),
         TerminalMode::Mixed,
         simplelog::ColorChoice::Auto,
-    ).unwrap();
+    )
+    .unwrap();
     info!(target: "main", "ReFan v{} online!", VERSION);
-    let mut cfg: Config =
-        toml::from_str(std::fs::read_to_string(args.config_path).context("Reading the configuration file").unwrap().as_str()).unwrap();
+    let mut cfg: Config = toml::from_str(
+        std::fs::read_to_string(args.config_path)
+            .context("Reading the configuration file")
+            .unwrap()
+            .as_str(),
+    )
+    .unwrap();
     for fan in &mut cfg.fans {
         fan.pwm_mode
             .write(b"1")
@@ -43,14 +49,21 @@ fn main() {
         for fan in &mut cfg.fans {
             fan.temp_sensor.seek(std::io::SeekFrom::Start(0)).unwrap();
             //read and parse the temperature
-            let mut buf = [0;32];
-            let len = fan.temp_sensor
+            let mut buf = [0; 32];
+            let len = fan
+                .temp_sensor
                 .read(&mut buf)
                 .context(format!("Reading temperature for fan {}", fan.name))
                 .unwrap();
-            let t = core::str::from_utf8(&buf[0..len-1]).unwrap()
+            let t = core::str::from_utf8(&buf[0..len - 1])
+                .unwrap()
                 .parse::<i32>()
-                .context(format!("Parsing temperature for fan {} from {} of len {}", fan.name, core::str::from_utf8(&buf).unwrap(), len))
+                .context(format!(
+                    "Parsing temperature for fan {} from {} of len {}",
+                    fan.name,
+                    core::str::from_utf8(&buf).unwrap(),
+                    len
+                ))
                 .unwrap() as f32
                 / 1000f32;
 
@@ -95,6 +108,11 @@ fn main() {
             if !fan.stopped {
                 fan.pwm_write
                     .write((pwm as i16).to_string().as_bytes())
+                    .context(format!("Writing PWM value {} for fan {}", pwm, fan.name))
+                    .unwrap();
+            } else {
+                fan.pwm_write
+                    .write(b"0")
                     .context(format!("Writing PWM value {} for fan {}", pwm, fan.name))
                     .unwrap();
             }
