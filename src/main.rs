@@ -66,8 +66,8 @@ fn main() {
                         tpoint_h = fan.curve[1];
                         break;
                     }
-                    tpoint_l = *point;
-                    tpoint_h = fan.curve[i - 1];
+                    tpoint_l = fan.curve[i - 1];
+                    tpoint_h = *point;
                     break;
                 }
                 //if the temperature is above the last TPoint, use the second last to last for interp.
