@@ -12,3 +12,5 @@ anyhow = "*"
 log = { version = "*", features = ["serde"] }
 simplelog = { version = "*", features = ["paris"] }
 num-traits = "0.2.*"
+ctrlc = "3.4.*"
+glob = "0.3.*"
