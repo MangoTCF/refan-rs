@@ -48,7 +48,7 @@ fn main() {
                 .read(&mut buf)
                 .context(format!("Reading temperature for fan {}", fan.name))
                 .unwrap();
-            let t = core::str::from_utf8(&buf[0..len]).unwrap()
+            let t = core::str::from_utf8(&buf[0..len-1]).unwrap()
                 .parse::<i32>()
                 .context(format!("Parsing temperature for fan {} from {} of len {}", fan.name, core::str::from_utf8(&buf).unwrap(), len))
                 .unwrap() as f32
